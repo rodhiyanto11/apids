@@ -1,0 +1,38 @@
+references
+JWT
+https://medium.com/@ridhofebriansa/cara-menggunakan-jwt-json-web-token-pada-lumen-5-8-dan-postgresql-1018120fa735
+https://medium.com/@asule/menggunakan-jwt-untuk-authentication-di-api-lumen-ed3af8dd9f1d    
+https://www.youtube.com/watch?v=9y6V244SZag&t=201s
+
+JWT LARAVEL
+
+https://medium.com/@newrey9227/belajar-autentikasi-api-di-laravel-menggunakan-jwt-c8c52d82e9d4
+
+LUMEN CREATE ARTISAN CONTROLLER
+https://medium.com/@amrilsyaifa_21001/membuat-controller-pada-lumen-dengan-artisan-9769932e7b32
+
+SEEDER
+https://laracasts.com/discuss/channels/laravel/php-artisan-seeding-error-too-many-arguments
+
+
+RESOURCE
+https://laravel.com/docs/5.8/eloquent-resources
+
+CARBON ADD MINUTES
+https://stackoverflow.com/questions/44227007/laravel-where-with-carbon-addminutes-not-working
+
+
+LUMEN
+https://lumen.laravel.com/docs/5.8
+
+
+CHANGE TIME ZONE 
+ADD IN ROUTE WEB.PHP date_default_timezone_set('Asia/Jakarta');
+
+
+CORS
+lumen : https://www.codementor.io/chiemelachinedum/steps-to-enable-cors-on-a-lumen-api-backend-e5a0s1ecx
+laravel : 
+
+DATAATABLE
+https://www.vuetable.com/guide/getting-started.html#usage
