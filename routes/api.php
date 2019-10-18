@@ -24,6 +24,7 @@ Route::post('refresh', 'Api\AuthController@refreshtoken');
 //Route::group(['prefix' => 'admin',  'middleware' => 'jwt.verify'], function(){
     //===admin===\\
     Route::resource('users', 'Api\UserController')->middleware('jwt.verify');
+    Route::resource('menus', 'Api\MenusController')->middleware('jwt.verify');
     Route::resource('companies', 'Api\CompaniesController')->middleware('jwt.verify');
     Route::resource('divisions', 'Api\DivisionsController')->middleware('jwt.verify');
     Route::resource('departments', 'Api\DepartmentsController')->middleware('jwt.verify');
