@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Menus;
+use Symfony\Component\HttpFoundation\Response;
 
 class MenusController extends Controller
 {
@@ -14,30 +15,45 @@ class MenusController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
-        if ( $request->input('client') ) {
-            return User::select('id', 'menu_name', 'menu_component')->get();
+        if($request['menu'] == true){
+            $data = Menus::where('menu_status',1)
+                    ->where('menu_parent','<>','menu_parent')
+                    ->get();
+            //$data = JWTAuth::parseToken()->authenticate();
+           // dd($data);
+            return response()->json(
+                [
+                    'status' => 'Success',
+                    'data'  => $data,
+                ],Response::HTTP_OK
+            );
+        }else{
+
+            if ( $request->input('client') ) {
+                return Menus::select('id', 'menu_name', 'menu_component')->get();
+            }
+
+            $columns = ['id','id', 'menu_name', 'menu_component','id'];
+
+            $length = $request->input('length');
+            $column = $request->input('column'); //Index
+
+            $dir = $request->input('dir');
+            $searchValue = $request->input('search');
+            $page = $request->input('page');
+
+            $query = Menus::select('id', 'menu_name', 'menu_component')->orderBy($columns[$column], $dir);
+
+            if ($searchValue) {
+                $query->where(function($query) use ($searchValue) {
+                    $query->where('menu_name', 'like', '%' . $searchValue . '%')
+                    ->orWhere('menu_component', 'like', '%' . $searchValue . '%');
+                });
+            }
+
+            $projects = $query->paginate($length);
+            return ['data' => $projects, 'draw' => $request->input('draw')];
         }
-
-        $columns = ['id','id', 'menu_name', 'menu_component','id'];
-
-        $length = $request->input('length');
-        $column = $request->input('column'); //Index
-
-        $dir = $request->input('dir');
-        $searchValue = $request->input('search');
-        $page = $request->input('page');
-
-        $query = Menus::select('id', 'menu_name', 'menu_component')->orderBy($columns[$column], $dir);
-
-        if ($searchValue) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('menu_name', 'like', '%' . $searchValue . '%')
-                ->orWhere('menu_component', 'like', '%' . $searchValue . '%');
-            });
-        }
-
-        $projects = $query->paginate($length);
-        return ['data' => $projects, 'draw' => $request->input('draw')];
     }
 
     /**

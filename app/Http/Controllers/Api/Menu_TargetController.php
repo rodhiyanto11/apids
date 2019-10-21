@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Companies;
+use App\Menu_Target;
 use Symfony\Component\HttpFoundation\Response;
-use App\Menus;
 
-class CompaniesController extends Controller
+class Menu_TargetController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,33 +16,16 @@ class CompaniesController extends Controller
      */
     public function index(Request $request)
     {
-
-        if($request['logo']){
-            $cekdata = Companies::where('companies_name',$request['companies_name'])
-                        ->where('companies_status',1);
-            //dd($cekdata->count());
-            if($cekdata->count() > 0){
-                $data = $cekdata->first();
-            }else{
-                $data = Companies::where('companies_name','admedika')
-                                ->where('companies_status',1)
-                                ->first();
-            }
-            //dd(1);
-        }elseif($request['user']){
-            //dd(2);
-            $data = Companies::where('companies_status',1)->get();
-        }elseif($request['menu']){
-
-                $data = Menus::all();
-            //$data = JWTAuth::parseToken()->authenticate();
+        //
+        if($request['menu'] == true){
+            $data = Menu_Target::where('menu_target_status',1)->get();
         }
-       //dd($data);
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $data,
-        ],Response::HTTP_OK);
+        return response()->json(
+            [
+                'status' => 'Success',
+                'data'  => $data,
+            ],Response::HTTP_OK
+        );
     }
 
     /**

@@ -15,6 +15,7 @@ class CreateAnalyticsTable extends Migration
     {
         Schema::create('analytics', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('analytics_ref');
             $table->string('analytics_name');
             $table->string('analytics_url');
             $table->string('analytics_icon');

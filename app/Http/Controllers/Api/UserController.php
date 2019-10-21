@@ -22,13 +22,13 @@ class UserController extends Controller
 
         $length = $request->input('length');
         $column = $request->input('column'); //Index
-        
+
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
         $page = $request->input('page');
-       
-        $query = User::select('id', 'name', 'email')->orderBy($columns[$column], $dir);
-       
+
+        $query = User::select('id', 'name', 'email');
+       // dd($query->get());
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
                 $query->where('name', 'like', '%' . $searchValue . '%')
@@ -37,6 +37,7 @@ class UserController extends Controller
         }
 
         $projects = $query->paginate($length);
+        //dd($projects);
         return ['data' => $projects, 'draw' => $request->input('draw')];
     }
     public function store(Request $request)
@@ -53,7 +54,7 @@ class UserController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors(), 400);
         }
-        
+
         $user = User::create([
             'name' => $request->json('name'),
             'email' => $request->json('email'),
@@ -83,10 +84,10 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $data,
-            
+
         ],Response::HTTP_OK
         );
-        
+
     }
     public function update(Request $request, $id)
     {
@@ -115,7 +116,7 @@ class UserController extends Controller
                     $data->departments_id =  $request->departments_id;
                 }
                 $data->save();
-                
+
         return response()->json([
             'status' => 'success',
             'data' => $data,

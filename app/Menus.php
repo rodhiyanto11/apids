@@ -12,9 +12,9 @@ class Menus extends Model
         'id',
         'menu_name',
         'menu_component',
-        'menu_controller',
+        'menu_path',
         'menu_icon',
-        'menu_app',
+        'menu_target',
         'menu_status'
     ];
 }

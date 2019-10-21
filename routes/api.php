@@ -25,9 +25,11 @@ Route::post('refresh', 'Api\AuthController@refreshtoken');
     //===admin===\\
     Route::resource('users', 'Api\UserController')->middleware('jwt.verify');
     Route::resource('menus', 'Api\MenusController')->middleware('jwt.verify');
+    Route::resource('menutarget', 'Api\Menu_TargetController')->middleware('jwt.verify');
     Route::resource('companies', 'Api\CompaniesController')->middleware('jwt.verify');
     Route::resource('divisions', 'Api\DivisionsController')->middleware('jwt.verify');
     Route::resource('departments', 'Api\DepartmentsController')->middleware('jwt.verify');
+    Route::resource('analytics', 'Api\AnalyticsController')->middleware('jwt.verify');
 //});
 
 
