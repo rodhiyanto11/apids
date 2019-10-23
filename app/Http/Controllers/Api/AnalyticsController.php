@@ -16,7 +16,7 @@ class AnalyticsController extends Controller
      */
     public function index(Request $request)
     {
-        dd(1);
+      //  dd(1);
      //   api/analytics/{analytic}
         //
 

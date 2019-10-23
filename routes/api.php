@@ -30,6 +30,8 @@ Route::post('refresh', 'Api\AuthController@refreshtoken');
     Route::resource('divisions', 'Api\DivisionsController')->middleware('jwt.verify');
     Route::resource('departments', 'Api\DepartmentsController')->middleware('jwt.verify');
     Route::resource('analytics', 'Api\AnalyticsController')->middleware('jwt.verify');
+    Route::resource('roles', 'Api\RolesController')->middleware('jwt.verify');
+    Route::resource('rolemenus', 'Api\RoleMenusController')->middleware('jwt.verify');
 //});
 
 
