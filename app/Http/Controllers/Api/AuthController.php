@@ -26,14 +26,14 @@ class AuthController extends Controller
         ]);
 
            $credentials = $request->json()->all();
-          // $exp = Carbon::now()->addDay(1);//add 1 minutes exp token
-           $exp = Carbon::now()->addMinutes(60);//add 1 minutes exp token
+          $exp = Carbon::now()->addDay(1)->timestamp;//add 1 minutes exp token
+          // $exp = Carbon::now()->addMinutes(60);//add 1 minutes exp token
 
 
         try {
            // dd($credentials);
-           // if (! $token = JWTAuth::attempt($credentials,['exp' => $exp])) {
-                if (! $token = JWTAuth::attempt($credentials)) {
+           if (! $token = JWTAuth::attempt($credentials,['exp' => $exp])) {
+              //  if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
             }
         } catch (JWTException $e) {
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     public function getAuthenticatedUser()
     {
-
+        //dd($user = JWTAuth::parseToken()->authenticate());
         try {
 
             if (! $user = JWTAuth::parseToken()->authenticate()) {

@@ -31,9 +31,9 @@ class RolesController extends Controller
        // dd($query->get());
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
-                $query->where('role_name', 'like', '%' . $searchValue . '%')
-                ->orWhere('role_status', 'like', '%' . $searchValue . '%')
-                ->orWhere('role_desc', 'like', '%' . $searchValue . '%');
+                $query->where('role_name', 'ilike', '%' . $searchValue . '%')
+                ->orWhere('role_status', 'ilike', '%' . $searchValue . '%')
+                ->orWhere('role_desc', 'ilike', '%' . $searchValue . '%');
             });
         }
 

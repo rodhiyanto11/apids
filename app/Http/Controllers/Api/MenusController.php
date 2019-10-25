@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Menus;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Auth;
+//use JWTAuth;
 class MenusController extends Controller
 {
     /**
@@ -14,6 +16,60 @@ class MenusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+       // dd(Auth::user());
+     //  dd(JWTAuth::parseToken()->authenticate()->name);
+    }
+    public function getstructure(){
+        $data = Menus::where('menu_status','1')->orderBy('menu_name','asc')->get();
+       // dd($data);
+        $parents = [];
+        $i = 0;
+        $j = 0;
+
+        foreach($data as $parent){
+            if(!$parent->menu_component || $parent->menu_parent == $parent->id && $parent->menu_target !=2){
+                $parents[$j]['no'] =$j;
+                $parents[$j]['id'] =$parent->id;
+                $parents[$j]['header'] = $parent->menu_name;
+                $parents[$j]['iconname'] = $parent->menu_icon;
+                $parents[$j]['index'] = str_replace(' ','',$parent->menu_name);
+                $parents[$j]['link'] = $parent->menu_path;
+                $j++;
+            }
+            $i++;
+        }
+     //  dd($parents);
+
+        for($k = 0 ; $k < count($parents) ; $k++ ){
+            $children = Menus::where('menu_status','1')
+            ->where('menu_parent',$parents[$k]['id'])
+            ->orderBy('menu_name','asc')
+            ->get();
+            //dd($children);
+            $m = 0;
+            foreach($children as $childrens){
+
+                if($childrens->menu_component && $childrens->menu_parent != $childrens->id ){
+                    //dd($parent->menu_component);
+                    $parents[$k]['child'][$m]['header'] = $childrens->menu_name;
+                    $parents[$k]['child'][$m]['parent'] = $childrens->menu_parent;
+                    $parents[$k]['child'][$m]['id'] = $childrens->id;
+                    //$parents[$k]['child'][$m]['name'] = $childrens->menu_name;
+                    $parents[$k]['child'][$m]['link'] = $childrens->menu_target == 4 ?  '/app/'.$childrens->menu_path."-".$childrens->tableau : '/app/'.$childrens->menu_path ;
+                    //$parents[$k]['child'][$m]['component'] = $childrens->component;
+                    $m++;
+                }
+                $i++;
+            }
+            //$parents[$k]['']
+        }
+       $data =  $parents;
+     // dd($parents);
+       return $data;
+
+    }
     public function index(Request $request){
         if($request['menu'] == true){
             $data = Menus::where('menu_status',1)
@@ -28,13 +84,31 @@ class MenusController extends Controller
                     'data'  => $data,
                 ],Response::HTTP_OK
             );
+        }else if($request['sidebar'] == true){
+          $data =  $this->getstructure();
+           return response()->json(
+            [
+                'status' => 'Success',
+                'data'  => $data,
+            ],Response::HTTP_OK
+        );
+    }else if($request['navigation'] == true){
+
+        $items = new Menus();
+
+        dd($items->tree());
+        return response()->json(
+            [
+                'status' => 'Success',
+                'data'  => $items,
+            ],Response::HTTP_OK);
         }else{
 
             if ( $request->input('client') ) {
-                return Menus::select('id', 'menu_name', 'menu_component')->get();
+                return Menus::select('id', 'menu_name', 'menu_component','tableau','menu_desc')->get();
             }
 
-            $columns = ['id','id', 'menu_name', 'menu_component','id'];
+            $columns = ['id','id', 'menu_name', 'menu_component','tableau','menu_desc','id'];
 
             $length = $request->input('length');
             $column = $request->input('column'); //Index
@@ -43,12 +117,12 @@ class MenusController extends Controller
             $searchValue = $request->input('search');
             $page = $request->input('page');
 
-            $query = Menus::select('id', 'menu_name', 'menu_component')->orderBy($columns[$column], $dir);
+            $query = Menus::select('id', 'menu_name', 'menu_component','tableau','menu_desc')->orderBy($columns[$column], $dir);
 
             if ($searchValue) {
                 $query->where(function($query) use ($searchValue) {
-                    $query->where('menu_name', 'like', '%' . $searchValue . '%')
-                    ->orWhere('menu_component', 'like', '%' . $searchValue . '%');
+                    $query->where('menu_name', 'ilike', '%' . $searchValue . '%')
+                    ->orWhere('menu_component', 'ilike', '%' . $searchValue . '%');
                 });
             }
 
@@ -68,8 +142,8 @@ class MenusController extends Controller
         //
         $validator = Validator::make($request->json()->all(), [
             'menu_name'         => 'required|string|max:255|min:2|unique:menus',
-            'menu_path'         => 'required|string|max:255|unique:menus',
-            'menu_component'    => 'required|min:6|string|unique:menus',
+            'menu_path'         => 'max:255',
+            'menu_component'    => 'max:255',
             'menu_parent'       => 'required|numeric',
             'menu_target'       => 'required|numeric',
         ]);
@@ -85,6 +159,8 @@ class MenusController extends Controller
             'menu_component' => $request->json('menu_component'),
             'menu_parent' => $request->json('menu_parent'),
             'menu_target' => $request->json('menu_target'),
+            'tableau' => $request->json('tableau'),
+            'menu_desc' => $request->json('menu_desc'),
         ]);
 
         return response()->json([
@@ -121,9 +197,9 @@ class MenusController extends Controller
     {
         //
         $validator = Validator::make($request->json()->all(), [
-            'menu_name'         => 'sometimes|required|string|max:255|min:2',
-            'menu_path'         => 'sometimes|required|string|max:255',
-            'menu_component'    => 'sometimes|required|min:6|string',
+            'menu_name'         => 'required|string|max:255|min:2',
+            'menu_path'         => 'max:255',
+            'menu_component'    => 'max:255',
             'menu_parent'       => 'required|numeric',
             'menu_target'       => 'required|numeric',
         ]);
@@ -137,6 +213,8 @@ class MenusController extends Controller
         $menu->menu_path = $request->menu_path;
         $menu->menu_component = $request->menu_component;
         $menu->menu_parent = $request->menu_parent;
+        $menu->tableau = $request->tableau;
+        $menu->menu_desc = $request->desc;
         $menu->save();
 
         return response()->json([

@@ -34,8 +34,10 @@ class CompaniesController extends Controller
             //dd(2);
             $data = Companies::where('companies_status',1)->get();
         }elseif($request['menu']){
-
-                $data = Menus::all();
+                $data = Menus::
+                where('menu_target','<>','4')
+                ->where('menu_component','<>','')
+                ->get();
             //$data = JWTAuth::parseToken()->authenticate();
         }
        //dd($data);

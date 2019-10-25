@@ -15,12 +15,9 @@ class CreateAnalyticsTable extends Migration
     {
         Schema::create('analytics', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('analytics_ref');
             $table->string('analytics_name');
             $table->string('analytics_url');
-            $table->string('analytics_icon');
             $table->integer('analytics_status');
-            $table->integer('analytics_parent')->nullable();
             $table->text('download_files')->nullable();
             $table->text('filter_options')->nullable();
             $table->timestamps();
