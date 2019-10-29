@@ -34,6 +34,8 @@ Route::post('refresh', 'Api\AuthController@refreshtoken');
     Route::resource('roles', 'Api\RolesController')->middleware('jwt.verify');
     Route::resource('rolemenus', 'Api\RoleMenusController')->middleware('jwt.verify');
     Route::resource('userroles', 'Api\UserRolesController')->middleware('jwt.verify');
+    Route::resource('analytics', 'Api\AnalyticsController')->middleware('jwt.verify');
+    Route::resource('logs', 'Api\LogsController')->middleware('jwt.verify');
 //});
 
 

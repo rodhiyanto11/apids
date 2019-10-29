@@ -10,6 +10,7 @@ use App\RoleMenus;
 use App\Menus;
 use App\Roles;
 use App\Http\Resources\RoleMenusCollection as RoleMenusResource;
+use JWTAuth;
 use Illuminate\Support\Facades\Validator;
 class RoleMenusController extends Controller
 {
@@ -20,38 +21,59 @@ class RoleMenusController extends Controller
      */
     public function index(Request $request)
     {
-        $columns = ['id','id','menu_name', 'role_name','id'];
-
-        $length = $request->input('length');
-        $column = $request->input('column'); //Index
-
-        $dir = $request->input('dir');
-        $searchValue = $request->input('search');
-        $id = $request->input('id');
-        $page = $request->input('page');
-
-        if ($searchValue) {
-            $query =
-            DB::table('role_menus')
-            ->join('menus','menus.id','role_menus.menu_id')
-            ->join('roles','roles.id','role_menus.role_id')
-            ->where('role_menus.role_id','=',$id)
-            ->orWhere('roles.role_name', 'ilike', '%' . $searchValue . '%')
-            ->orWhere('menus.menu_name', 'ilike', '%' . $searchValue . '%')
-            ->select('role_menus.menu_id','role_menus.role_id','menus.menu_name','roles.role_name','role_menus.id');
-           // ->orderBy($columns[$column], $dir);
+        if($request->profile == true){
+            $auth           = JWTAuth::parseToken()->authenticate();
+            $role           =  DB::table('user_roles')
+            ->join('roles','roles.id','user_roles.role_id')
+            ->where('user_roles.user_id',$auth->id)
+            ->get();
+            return response()->json([
+                'data' => $role,
+            ],Response::HTTP_CREATED);
         }else{
-           $query =  DB::table('role_menus')
-            ->join('menus','menus.id','role_menus.menu_id')
-            ->join('roles','roles.id','role_menus.role_id')
-            ->where('role_menus.role_id','=',$id)
-            ->select('role_menus.menu_id','role_menus.role_id','menus.menu_name','roles.role_name','role_menus.id');
-           //->orderBy($columns[$column], $dir);
+            if ( $request->input('client') ) {
+                return User::select('id', 'name', 'email')->get();
+            }
+
+            $columns = ['id','id','menu_name', 'role_name','id'];
+
+            $length = $request->input('length');
+            $column = $request->input('column'); //Index
+
+            $dir = $request->input('dir');
+            $searchValue = $request->input('search');
+            $id = $request->input('id');
+            $page = $request->input('page');
+
+            if ($searchValue && $columns[$column] && $dir) {
+               // dd($id);
+                $query =
+                DB::table('role_menus')
+                ->join('menus','menus.id','role_menus.menu_id')
+                ->join('roles','roles.id','role_menus.role_id')
+                ->where('role_menus.role_id',$id)
+                //->orWhere('roles.role_name', 'ilike', '%' . $searchValue . '%')
+                //->orWhere('menus.menu_name', 'ilike', '%' . $searchValue . '%')
+                ->orderBy('role_menus.'.$columns[$column], $dir)
+                ->select('role_menus.menu_id','role_menus.role_id','menus.menu_name','roles.role_name','role_menus.id');
+
+            }else{
+              //  dd($dir);
+               // dd($id);
+               $query =  DB::table('role_menus')
+                ->join('menus','menus.id','role_menus.menu_id')
+                ->join('roles','roles.id','role_menus.role_id')
+                ->where('role_menus.role_id',$id)
+                ->orderBy('role_menus.'.$columns[$column], $dir)
+                ->select('role_menus.menu_id','role_menus.role_id','menus.menu_name','roles.role_name','role_menus.id');
+               // dd($query->get());
+            }
+
+            $projects = $query->paginate();
+          //  dd($projects);
+            return ['data' => $projects, 'draw' => $request->input('draw')];
         }
 
-        $projects = $query->paginate($length);
-        //dd($projects);
-        return ['data' => $projects, 'draw' => $request->input('draw')];
 
     }
 

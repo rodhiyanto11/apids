@@ -7,28 +7,39 @@ use App\Http\Controllers\Controller;
 use App\Menus;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
-use Auth;
-//use JWTAuth;
+use JWTAuth;
+use Illuminate\Support\Facades\DB;
 class MenusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function __construct()
     {
-       // dd(Auth::user());
-     //  dd(JWTAuth::parseToken()->authenticate()->name);
     }
-    public function getstructure(){
-        $data = Menus::where('menu_status','1')->orderBy('menu_name','asc')->get();
-       // dd($data);
+    public function getstructure($role = null){
+        $auth           = JWTAuth::parseToken()->authenticate();
+        $role_default   = $auth->role_default;
+        $id             = $auth->id;
+       //dd($id);
+       //$data = Menus::where('menu_status','1')->orderBy('menu_name','asc')->get();
+        $data = DB::table('user_roles')
+        ->join('role_menus','role_menus.role_id','user_roles.role_id')
+        ->join('roles','roles.id','role_menus.role_id')
+        ->join('menus','menus.id','role_menus.menu_id')
+        ->join('users','users.id','user_roles.user_id')
+        ->where('users.id',$id)
+        ->where('menus.menu_status',1)
+        ->where('user_roles.role_id',$role_default)
+        ->orderBy('menu_name','asc')
+        ->distinct('menus.id')
+        ->select('menus.menu_component','menus.menu_parent','menus.menu_target','menus.id','menus.menu_name','menu_icon','menu_path')
+        ->get();
+
         $parents = [];
         $i = 0;
         $j = 0;
 
         foreach($data as $parent){
+           // dd($parent);
             if(!$parent->menu_component || $parent->menu_parent == $parent->id && $parent->menu_target !=2){
                 $parents[$j]['no'] =$j;
                 $parents[$j]['id'] =$parent->id;
@@ -43,15 +54,25 @@ class MenusController extends Controller
      //  dd($parents);
 
         for($k = 0 ; $k < count($parents) ; $k++ ){
-            $children = Menus::where('menu_status','1')
-            ->where('menu_parent',$parents[$k]['id'])
-            ->orderBy('menu_name','asc')
+            $children =
+            DB::table('user_roles')
+            ->join('users','users.id','user_roles.user_id')
+            ->join('roles','roles.id','users.role_default')
+            ->join('role_menus','role_menus.role_id','roles.id')
+            ->join('menus','menus.id','role_menus.menu_id')
+            ->where('users.id',$id)
+            ->where('menus.menu_status',1)
+            ->where('menus.menu_parent',$parents[$k]['id'])
+
+            ->orderBy('menus.menu_name','asc')
+            ->distinct('menus.id')
+            ->select('menus.menu_component','menus.menu_parent','menus.menu_target','menus.id','menus.menu_name','menu_icon','menu_path','menus.tableau','users.role_default','role_menus.role_id')
             ->get();
-            //dd($children);
+          //  dd($children);
             $m = 0;
             foreach($children as $childrens){
 
-                if($childrens->menu_component && $childrens->menu_parent != $childrens->id ){
+                if($childrens->menu_component && $childrens->menu_parent != $childrens->id && $childrens->role_default == $childrens->role_id){
                     //dd($parent->menu_component);
                     $parents[$k]['child'][$m]['header'] = $childrens->menu_name;
                     $parents[$k]['child'][$m]['parent'] = $childrens->menu_parent;
@@ -71,8 +92,11 @@ class MenusController extends Controller
 
     }
     public function index(Request $request){
+
+
         if($request['menu'] == true){
             $data = Menus::where('menu_status',1)
+
                     //->where('menu_parent','<>','id')
                     ->orderBy('id')
                     ->get();

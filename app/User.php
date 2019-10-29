@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 //class User extends Authenticatable
-class User extends Authenticatable implements JWTSubject 
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -20,9 +20,9 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'id','name', 'email', 'password','username',
         'expired_status','expired_date','companies_id','divisions_id','departments_id',
-        'status','phone','api_token','role_default','created_at','updated_at'
+        'status','phone','api_token','role_default','created_at','updated_at','role_default','photo'
     ];
-
+    //  http://localhost:8080/user-profile.png
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Menu_Target;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class Menu_TargetController extends Controller
 {
     /**
@@ -17,6 +18,7 @@ class Menu_TargetController extends Controller
     public function index(Request $request)
     {
         //
+
         if($request['menu'] == true){
             $data = Menu_Target::where('menu_target_status',1)->get();
         }

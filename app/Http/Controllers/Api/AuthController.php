@@ -24,9 +24,14 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255',
             'password' => 'required|string',
         ]);
-
-           $credentials = $request->json()->all();
-          $exp = Carbon::now()->addDay(1)->timestamp;//add 1 minutes exp token
+       // dd($request->json()->all()['email']);
+            if(filter_var($request->json('email'),FILTER_VALIDATE_EMAIL)){
+                $credentials = ['email' => $request->json('email') , 'password' => $request->json('password')];
+            }else{
+                $credentials = ['username' => $request->json('email'), 'password' => $request->json('password')];
+            }
+           // $credentials = $request->json()->all();
+           $exp = Carbon::now()->addDay(1)->timestamp;//add 1 minutes exp token
           // $exp = Carbon::now()->addMinutes(60);//add 1 minutes exp token
 
 
@@ -39,15 +44,24 @@ class AuthController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        User::where('email', $request->json('email'))->first()
+        if(filter_var($request->json('email'),FILTER_VALIDATE_EMAIL)){
+            User::where('email', $request->json('email'))->first()
             ->update(['api_token' => $token]);
+            $data = new UserCollection(User::where('email', $request->json('email'))->first());
+        }else{
+            User::where('username', $request->json('email'))->first()
+            ->update(['api_token' => $token]);
+            $data = new UserCollection(User::where('username', $request->json('email'))->first());
+        }
 
-        $data = new UserCollection(User::where('email', $request->json('email'))->first());
+
+
         //$token_exp = $exp->format('d-m-Y H:i:s');
         //$new_token = JWTAuth::refresh($token);
         return response()->json([
             'status' => 'Login is Successfully',
             'data' => $data,
+            'url' => stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://'.$request->getHttpHost(),
             'token' => $token,
           //  'refresh_token' => $new_token,
            // 'token_exp' => $token_exp

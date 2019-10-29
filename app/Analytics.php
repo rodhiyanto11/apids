@@ -9,6 +9,6 @@ class Analytics extends Model
     //
     protected $table = 'analytics';
     protected $fillable = [
-        'id','analytic_ref','analytics_url','analytics_icon'
+        'id','analytics_name','analytics_url','analytics_status'
     ];
 }

@@ -19,9 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('username')->unique();
             $table->string('password');
+            $table->text('photo');
             $table->integer('companies_id');
             $table->integer('divisions_id')->nullable();
             $table->integer('departments_id')->nullable();
+            $table->integer('role_default')->nullable();
             $table->date('expired_date')->nullable();
             $table->integer('expired_status');
             $table->string('phone')->unique();
