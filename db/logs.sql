@@ -1,0 +1,11 @@
+INSERT INTO "logs" VALUES (4, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 1, 'How To Read', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 10:57:06', '2019-10-29 10:57:06');
+INSERT INTO "logs" VALUES (5, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 1, 'How To Read', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 10:58:07', '2019-10-29 10:58:07');
+INSERT INTO "logs" VALUES (6, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 1, 'How To Read', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:21:59', '2019-10-29 11:21:59');
+INSERT INTO "logs" VALUES (7, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 1, 'How To Read', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:22:00', '2019-10-29 11:22:00');
+INSERT INTO "logs" VALUES (8, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 1, 'How To Read', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:22:00', '2019-10-29 11:22:00');
+INSERT INTO "logs" VALUES (9, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 2, 'General Over', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:22:06', '2019-10-29 11:22:06');
+INSERT INTO "logs" VALUES (10, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 2, 'General Over', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:22:06', '2019-10-29 11:22:06');
+INSERT INTO "logs" VALUES (11, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 2, 'General Over', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:22:07', '2019-10-29 11:22:07');
+INSERT INTO "logs" VALUES (12, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 2, 'General Over', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:22:59', '2019-10-29 11:22:59');
+INSERT INTO "logs" VALUES (13, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 2, 'General Over', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:23:05', '2019-10-29 11:23:05');
+INSERT INTO "logs" VALUES (14, 1, 'rodhi', '36.86.63.182', '-6.18054', '106.828', 2, 'General Over', '(ID)Indonesia', '(JK)Jakarta', 'view', '2019-10-29 11:23:05', '2019-10-29 11:23:05');

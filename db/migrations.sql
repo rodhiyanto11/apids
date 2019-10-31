@@ -1,0 +1,14 @@
+INSERT INTO "migrations" VALUES (13, '2019_10_16_102934_create_menu_apps_table', 1);
+INSERT INTO "migrations" VALUES (15, '2014_10_12_000000_create_users_table', 2);
+INSERT INTO "migrations" VALUES (16, '2014_10_12_100000_create_password_resets_table', 2);
+INSERT INTO "migrations" VALUES (17, '2019_10_07_162308_create_companies_table', 2);
+INSERT INTO "migrations" VALUES (18, '2019_10_07_163015_create_divisions_table', 2);
+INSERT INTO "migrations" VALUES (19, '2019_10_07_163244_create_departments_table', 2);
+INSERT INTO "migrations" VALUES (20, '2019_10_10_113333_create_logs_table', 2);
+INSERT INTO "migrations" VALUES (21, '2019_10_11_101404_create_menus_table', 2);
+INSERT INTO "migrations" VALUES (23, '2019_10_11_112435_create_role_analytics_table', 2);
+INSERT INTO "migrations" VALUES (24, '2019_10_11_112513_create_roles_table', 2);
+INSERT INTO "migrations" VALUES (25, '2019_10_11_113404_create_user_roles_table', 2);
+INSERT INTO "migrations" VALUES (26, '2019_10_11_135930_create_role_menus_table', 2);
+INSERT INTO "migrations" VALUES (27, '2019_10_16_102934_create_menu_target_table', 3);
+INSERT INTO "migrations" VALUES (28, '2019_10_11_102431_create_analytics_table', 4);

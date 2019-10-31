@@ -1,0 +1,11 @@
+INSERT INTO "menus" VALUES (11, 'Header 1', NULL, 1, 1, 11, NULL, NULL, '2019-10-24 16:28:44', '2019-10-24 16:28:52', NULL, NULL);
+INSERT INTO "menus" VALUES (2, 'Users', 'fa', 1, 1, 10, 'users', 'Users/Index', NULL, NULL, NULL, NULL);
+INSERT INTO "menus" VALUES (4, 'Menus', 'fa', 1, 1, 10, 'menus', 'Menus/Index', NULL, '2019-10-22 16:14:56', NULL, NULL);
+INSERT INTO "menus" VALUES (7, 'Roles', 'fa', 1, 1, 10, 'roles', 'Roles/Index', '2019-10-23 09:05:20', '2019-10-23 09:05:20', NULL, NULL);
+INSERT INTO "menus" VALUES (10, 'User Management', NULL, 1, 1, 10, '/app/usermanagement', NULL, '2019-10-24 10:53:57', '2019-10-24 10:54:31', NULL, NULL);
+INSERT INTO "menus" VALUES (3, 'Analytics', 'fa', 1, 2, 3, 'analytics-:analyticsid', 'Analytics/Analytics', NULL, NULL, NULL, NULL);
+INSERT INTO "menus" VALUES (8, 'How To Read', NULL, 1, 4, 12, 'analytics', 'Analytics', '2019-10-24 09:38:37', '2019-10-24 16:29:42', 2, NULL);
+INSERT INTO "menus" VALUES (9, 'General Over', NULL, 1, 4, 11, 'analytics', 'General Over', '2019-10-24 09:43:05', '2019-10-25 14:36:39', 1, NULL);
+INSERT INTO "menus" VALUES (1, 'Tables', 'fa', 1, 3, 1, 'tables', 'Tables/Basic', NULL, NULL, NULL, NULL);
+INSERT INTO "menus" VALUES (12, 'Header 2', NULL, 1, 1, 12, NULL, NULL, '2019-10-24 16:29:11', '2019-10-25 15:48:39', NULL, NULL);
+INSERT INTO "menus" VALUES (13, 'Tableau', NULL, 1, 1, 10, 'tableau', 'Tableau/Index', '2019-10-28 10:28:39', '2019-10-28 10:28:39', NULL, NULL);

@@ -85,6 +85,7 @@ class UserController extends Controller
             'divisions_id' => $request->json('divisions_id'),
             'departments_id' => $request->json('departments_id'),
             'status' => 1,
+            'photo' => 'user-profile.png',
             'expired_status' => $request->json('expired_status'),
             'expired_date' => $request->json('expired_date'),
             'phone' => $request->json('phone'),
@@ -137,10 +138,17 @@ class UserController extends Controller
             //     @unlink($userPhoto);
             // }
             $user->photo = $request->photo;
-            $user->save();
+            $update = $user->save();
+            return response()->json([
+                'status' => 'success',
+                'data' => $request->photo,
+            ],Response::HTTP_OK);
            }
            if($request->password && strlen($request->password) > 0){
-                $userdata = User::findOrFail('id',$id)->get();
+                $auth           = JWTAuth::parseToken()->authenticate();
+                $id             = $auth->id;
+                $userdata = User::where('id',$id)->first();
+               // dd($userdata);
                 $validatepwd = strlen($request->password) > 0  ||  $userdata->status == 2 ? 'required|string|min:8|confirmed' : '';
                $validator = Validator::make($request->all(), [
                     'password' => $validatepwd
@@ -150,19 +158,21 @@ class UserController extends Controller
                 }
 
                if(strlen($request->password) > 0  && $userdata->status == 2){
-                    $update = User::findOrFail($request->id);
+                    $update = User::where('id',$id)->first();
                     $update->status = 1;
-                    $update->password = bcrypt::make($request->password);
+                    $update->password = Hash::make($request->password);
                     $update->save();
                 }elseif(strlen($request->password) > 0 && $userdata->status == 1){
-                    $update->password = bcrypt::make($request->password);
+                    $update->password = Hash::make($request->password);
                     $update->save();
                 }
                 return response()->json([
                     'status' => 'success',
                     'data' => $update,
                 ],Response::HTTP_OK);
+                
            }
+          
         }elseif($request->json('params')['changerole'] && $request->json('params')['role_id']){
 
             $auth           = JWTAuth::parseToken()->authenticate();

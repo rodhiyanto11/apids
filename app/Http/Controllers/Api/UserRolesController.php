@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use App\UserRoles;
-use App\Users;
+use App\User;
 use App\Roles;
 use Illuminate\Support\Facades\Validator;
 class UserRolesController extends Controller
@@ -72,14 +72,22 @@ class UserRolesController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors(), 400);
         }
-
+        $update =User::where('id', $request->json('user_id'))
+        ->first();
+        if(strlen($update->role_default) == 0){
+            $updatedata = 
+            User::where('id', $request->json('user_id'))
+            //dd($updatedata);
+            ->update(['role_default' => $request->json('role_id')]);
+        }
+        //->update(['role_default' => $request->json('role_id')]);
         $menu = UserRoles::create([
             'user_id'         => $request->json('user_id'),
             'role_id'         => $request->json('role_id'),
             'status'         => 1,
 
         ]);
-
+       
         return response()->json([
             'data' => $menu,
         ],Response::HTTP_CREATED);

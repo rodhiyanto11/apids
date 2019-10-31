@@ -44,6 +44,7 @@ class CompaniesController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'url' => stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://'.$request->getHttpHost(),
             'data' => $data,
         ],Response::HTTP_OK);
     }

@@ -33,7 +33,7 @@ class MenusController extends Controller
         ->distinct('menus.id')
         ->select('menus.menu_component','menus.menu_parent','menus.menu_target','menus.id','menus.menu_name','menu_icon','menu_path')
         ->get();
-
+        //dd($data);
         $parents = [];
         $i = 0;
         $j = 0;
